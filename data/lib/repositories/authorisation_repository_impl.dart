@@ -1,11 +1,11 @@
 import "package:domain/domain.dart";
-import "package:domain/error/authorisation_error/user_not_found_exception.dart";
+
 import 'package:firebase_auth/firebase_auth.dart';
 
 import "package:domain/error/authorisation_error/email_already_in_use_exception.dart";
 import "package:domain/error/authorisation_error/invalid_email_exception.dart";
 import "package:domain/error/authorisation_error/weak_password_exception.dart";
-import "package:domain/error/authorisation_error/wrong_password_exception.dart";
+
 import "package:domain/error/authorisation_error/user_disabled_exception.dart";
 import "package:domain/repositories/authorisation_repository.dart";
 import "package:domain/error/authorisation_error/unexpected_event_error.dart";
@@ -66,7 +66,7 @@ class AuthorisationRepositoryImpl implements AuthorisationRepository {
     try {
       final credential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      if (credential.user?.emailVerified == false ?? false) {
+      if (credential.user?.emailVerified == false ?? true) {
         await signOut();
         throw EmailNotVerifiedException();
       }
