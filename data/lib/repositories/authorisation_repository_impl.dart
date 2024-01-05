@@ -56,17 +56,12 @@ class AuthorisationRepositoryImpl implements AuthorisationRepository {
   }
 
   @override
-  Future<void> deleteUser() async {
-    // TODO:
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> signIn({required String email, required String password}) async {
     try {
       final credential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      if (credential.user?.emailVerified == false ?? true) {
+      if (credential.user?.emailVerified == false ||
+          credential.user?.emailVerified == null) {
         await signOut();
         throw EmailNotVerifiedException();
       }
@@ -99,5 +94,20 @@ class AuthorisationRepositoryImpl implements AuthorisationRepository {
   @override
   Future<void> signOut() async {
     await _auth.signOut();
+  }
+
+  @override
+  Future<void> resetPassword({required String email}) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-email') {
+        throw InvalidEmailException();
+      } else if (e.code == 'user-not-found') {
+        throw UserNotFoundException();
+      } else {
+        throw UnexpectedEventException();
+      }
+    }
   }
 }
