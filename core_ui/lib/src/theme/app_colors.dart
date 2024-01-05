@@ -11,6 +11,8 @@ abstract class AppColors {
   Color get primaryBg;
 
   Color get white;
+
+  Color get lightGrey;
 }
 
 class DarkColors extends LightColors {
@@ -21,9 +23,15 @@ class LightColors implements AppColors {
   const LightColors();
 
   @override
-  // RGBO(236, 239, 241, 1)
-  Color get primaryBg => const Color(0xFFeceff1);
+  Color get primaryBg => Colors.indigo.shade100;
 
   @override
   Color get white => const Color.fromRGBO(255, 255, 255, 1);
+
+  Color get black => Colors.black;
+
+  Color get red => Colors.red;
+
+  @override
+  Color get lightGrey => Colors.grey;
 }
