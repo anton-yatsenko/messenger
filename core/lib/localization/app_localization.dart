@@ -8,8 +8,9 @@ class AppLocalization {
   /// also you may need to get locale from local store that was
   /// previously set so here is an example how you can update [fallbackLocale] :
   /// appLocator<PrefsProvider>().getLocale() ?? _enLocale
-  static List<Locale> get supportedLocales => <Locale>[_enLocale];
+  static List<Locale> get supportedLocales => <Locale>[_enLocale, _ruLocale];
 
   static Locale get fallbackLocale => _enLocale;
   static const Locale _enLocale = Locale('en', 'US');
+  static const Locale _ruLocale = Locale('ru', 'RU');
 }
