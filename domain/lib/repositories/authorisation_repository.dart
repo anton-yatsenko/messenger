@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-abstract class AuthorisationRepository {
+abstract interface class AuthorisationRepository {
   Future<void> signIn({
     required String email,
     required String password,
@@ -15,9 +15,9 @@ abstract class AuthorisationRepository {
 
   Future<void> signOut();
 
-  Future<void> deleteUser();
-
   Future<void> updateUserPhoto({
     required String photoURL,
   });
+
+  Future<void> resetPassword({required String email});
 }
