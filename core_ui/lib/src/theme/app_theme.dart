@@ -3,56 +3,90 @@ part of core_ui;
 const LightColors _appColors = LightColors();
 
 final ThemeData lightTheme = ThemeData.light().copyWith(
-  // appBarTheme: _getAppBarTheme(),
-  scaffoldBackgroundColor: _appColors.white,
-  textTheme: _getTextTheme(),
-  inputDecorationTheme: _getInputDecorationTheme(),
-  primaryColor: _appColors.primaryBg,
-  colorScheme: ColorScheme.fromSwatch().copyWith(
-    secondary: _appColors.primaryBg,
-    primary: _appColors.primaryBg,
+  appBarTheme: _getAppBarTheme(),
+  filledButtonTheme: FilledButtonThemeData(
+    style: ButtonStyle(
+      backgroundColor: MaterialStatePropertyAll<Color>(Colors.blue.shade900),
+    ),
   ),
+  scaffoldBackgroundColor: _lightColorScheme.background,
+  textTheme: _textTheme,
+  inputDecorationTheme: _inputDecorationTheme,
+  primaryColor: _lightColorScheme.background,
+  colorScheme: _lightColorScheme,
 );
 
-TextTheme _getTextTheme() {
-  return TextTheme(
-    titleMedium: AppFonts.normal13,
-    bodyMedium: AppFonts.normal13,
-  ).apply(
-    bodyColor: _appColors.primaryBg,
-    displayColor: _appColors.primaryBg,
-  );
-}
+final _lightColorScheme = ColorScheme.fromSeed(
+  seedColor: Colors.blue,
+  background: Colors.blue.shade200,
+  tertiary: Colors.blue.shade50,
+  primaryContainer: Colors.white,
+  //onPrimaryContainer:
+);
 
-InputDecorationTheme _getInputDecorationTheme() {
-  return InputDecorationTheme(
-    hintStyle: AppFonts.normal13.copyWith(color: _appColors.primaryBg),
-    border: OutlineInputBorder(
-      borderRadius: const BorderRadius.all(
-        Radius.circular(AppDimens.BORDER_RADIUS_12),
-      ),
-      borderSide: BorderSide(
-        color: _appColors.primaryBg,
-      ),
+final ThemeData darkTheme = lightTheme.copyWith(
+  appBarTheme: _getAppBarTheme(),
+);
+
+TextTheme _textTheme = TextTheme(
+  titleLarge: Typography.material2021().black.titleLarge,
+  titleMedium: Typography.material2021().black.titleMedium,
+  bodyLarge: Typography.material2021().black.bodyLarge,
+  bodyMedium: Typography.material2021().black.bodyMedium,
+  bodySmall: Typography.material2021().black.bodySmall,
+  labelMedium: Typography.material2021().black.labelMedium,
+).apply(
+  bodyColor: Colors.black,
+  displayColor: Colors.blueGrey,
+  decorationColor: Colors.black,
+);
+
+InputDecorationTheme _inputDecorationTheme = InputDecorationTheme(
+  hintStyle: Typography.material2021().black.bodyMedium,
+  enabledBorder: OutlineInputBorder(
+    borderRadius: const BorderRadius.all(
+      Radius.circular(AppDimens.borderRadius28),
     ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: const BorderRadius.all(
-        Radius.circular(AppDimens.BORDER_RADIUS_12),
-      ),
-      borderSide: BorderSide(
-        color: _appColors.primaryBg,
-        width: 2,
-      ),
+    borderSide: BorderSide(color: _appColors.primaryBg, width: 1),
+  ),
+  disabledBorder: OutlineInputBorder(
+    borderRadius: const BorderRadius.all(
+      Radius.circular(AppDimens.borderRadius28),
     ),
-    errorBorder: OutlineInputBorder(
-      borderRadius: const BorderRadius.all(
-        Radius.circular(AppDimens.BORDER_RADIUS_6),
-      ),
-      borderSide: BorderSide(
-        color: _appColors.primaryBg,
-        width: 2,
-      ),
+    borderSide: BorderSide(color: _appColors.primaryBg, width: 10),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderRadius: const BorderRadius.all(
+      Radius.circular(AppDimens.borderRadius28),
     ),
-    labelStyle: AppFonts.normal13.copyWith(color: _appColors.primaryBg),
+    borderSide: BorderSide(
+      color: _appColors.primaryBg,
+      width: 2,
+    ),
+  ),
+  errorBorder: OutlineInputBorder(
+    borderRadius: const BorderRadius.all(
+      Radius.circular(AppDimens.borderRadius28),
+    ),
+    borderSide: BorderSide(
+      color: Colors.red,
+      width: 2,
+    ),
+  ),
+  focusedErrorBorder: OutlineInputBorder(
+    borderRadius: const BorderRadius.all(
+      Radius.circular(AppDimens.borderRadius28),
+    ),
+    borderSide: BorderSide(
+      color: Colors.red,
+      width: 2,
+    ),
+  ),
+  labelStyle: AppFonts.normal13.copyWith(color: _appColors.primaryBg),
+);
+
+AppBarTheme _getAppBarTheme() {
+  return AppBarTheme(
+    color: Colors.transparent,
   );
 }

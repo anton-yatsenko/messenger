@@ -1,0 +1,1 @@
+class UserDisabledException implements Exception {}

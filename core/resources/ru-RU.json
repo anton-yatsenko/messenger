@@ -1,0 +1,58 @@
+{
+  "auth": {
+    "auth_page": {
+      "email_field": {
+        "hint_text": "Электронная почта",
+        "empty_value_error_msg": "Значение не может быть пустым",
+        "invalid_email_msg": "Неверный адрес электронной почты"
+      },
+      "password_field": {
+        "hint_text": "Пароль",
+        "empty_value_error_msg": "Значение не может быть пустым",
+        "invalid_password_msg": "Пароль должен быть длиной не менее 6 символов"
+      },
+      "error_messages": {
+        "invalid_email_and_password_comb_msg": "Неверная комбинация адреса электронной почты и пароля",
+        "blocked_user_msg": "Пользователь заблокирован. Невозможно войти",
+        "email_not_verified_msg": "Электронная почта не подтверждена, проверьте свой почтовый ящик для получения письма с подтверждением",
+        "unexpected_email_msg": "Произошло что-то неожиданное, попробуйте еще раз"
+      },
+      "forgot_password_clickable_text": "Забыли пароль?",
+      "sign_in_button_text": "Войти",
+      "sign_in_with_google_button_text": "Войти с помощью",
+      "dont_have_an_account_msg": "У вас нет аккаунта?",
+      "sign_up_clickable_text": "Зарегистрироваться"
+    },
+    "reg_page": {
+      "email_field": {
+        "hint_text": "Электронная почта",
+        "empty_value_error_msg": "Значение не может быть пустым",
+        "invalid_email_msg": "Неверный адрес электронной почты"
+      },
+      "password_field": {
+        "hint_text": "Пароль",
+        "empty_value_error_msg": "Значение не может быть пустым",
+        "invalid_password_msg": "Пароль должен быть длиной не менее 6 символов"
+      },
+      "error_messages": {
+        "weak_password_msg": "Пароль должен быть длиной не менее 6 символов",
+        "email_already_in_use": "Электронная почта уже используется, попробуйте другую",
+        "invalid_email_error_msg": "Неверный адрес электронной почты",
+        "unexpected_event_msg": "Произошло что-то неожиданное, попробуйте еще раз"
+      },
+      "sign_up_button_text": "Зарегистрироваться",
+      "success_message": "На ваш адрес электронной почты было отправлено письмо с подтверждением"
+    },
+    "forgot_password_page": {
+      "email_field": {
+        "hint_text": "Электронная почта",
+        "empty_value_error_msg": "Значение не может быть пустым",
+        "invalid_email_msg": "Неверный адрес электронной почты"
+      },
+      "send_email_button_text": "Отправить письмо для сброса пароля",
+      "invalid_email_error_msg": "Неверный адрес электронной почты"
+    },
+    "password_reset_success_popup_dialog_message": "Ваш пароль успешно сброшен. Проверьте папку входящих сообщений в своей почте для получения дальнейших инструкций. Если электронное письмо не пришло, попробуйте еще раз и проверьте свою почту.",
+    "registration_success_popup_dialog_message": "Подтвердите свой адрес электронной почты с помощью письма для подтверждения."
+  }
+}
