@@ -1,0 +1,1 @@
+class UnsupportedSourceException implements Exception {}

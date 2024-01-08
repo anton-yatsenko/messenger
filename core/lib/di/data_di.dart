@@ -4,6 +4,8 @@ import 'package:domain/usecases/auth_use_case/sign_in_use_case.dart';
 import 'package:domain/usecases/export_usecases.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'app_di.dart';
 import 'package:domain/domain.dart';
@@ -23,14 +25,20 @@ final DataDI dataDI = DataDI();
 
 class DataDI {
   Future<void> initDependencies() async {
-    await EasyLocalization.ensureInitialized();
-    appLocator.registerSingleton<AppRouter>(AppRouter());
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    _initCore();
     _initRepositories();
     _initUsecases();
     _initBlocs();
+  }
+
+  Future<void> _initCore() async {
+    await EasyLocalization.ensureInitialized();
+
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    appLocator.registerSingleton<AppRouter>(AppRouter());
+    appLocator.registerSingleton<ImagePicker>(ImagePicker());
   }
 
   Future<void> _initDataDependencies() async {
@@ -41,7 +49,8 @@ class DataDI {
 
   void _initRepositories() {
     appLocator.registerSingleton<AuthorisationRepository>(
-        AuthorisationRepositoryImpl(auth: FirebaseAuth.instance));
+        AuthorisationRepositoryImpl(
+            auth: FirebaseAuth.instance, database: FirebaseDatabase.instance));
   }
 
   void _initUsecases() {

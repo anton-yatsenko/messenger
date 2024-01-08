@@ -9,12 +9,17 @@ import "package:domain/error/authorisation_error/weak_password_exception.dart";
 import "package:domain/error/authorisation_error/user_disabled_exception.dart";
 import "package:domain/repositories/authorisation_repository.dart";
 import "package:domain/error/authorisation_error/unexpected_event_error.dart";
+import "package:firebase_database/firebase_database.dart";
 import "package:google_sign_in/google_sign_in.dart";
 
 class AuthorisationRepositoryImpl implements AuthorisationRepository {
   final FirebaseAuth _auth;
+  final FirebaseDatabase _database;
 
-  AuthorisationRepositoryImpl({required FirebaseAuth auth}) : _auth = auth;
+  AuthorisationRepositoryImpl(
+      {required FirebaseAuth auth, required FirebaseDatabase database})
+      : _auth = auth,
+        _database = database;
 
   @override
   Future<UserCredential> createUserWithEmailAndPassword(
@@ -24,6 +29,10 @@ class AuthorisationRepositoryImpl implements AuthorisationRepository {
           email: email, password: password);
       final user = credential.user;
       await user?.sendEmailVerification();
+      final userId = credential.user?.uid;
+      if (userId != null) {
+        await _writeUserInDB(userId);
+      }
       return credential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -39,7 +48,7 @@ class AuthorisationRepositoryImpl implements AuthorisationRepository {
   }
 
   @override
-  Future<UserCredential> signInWithGoogle() async {
+  Future<void> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleSignInAccount =
           await GoogleSignIn().signIn();
@@ -49,7 +58,11 @@ class AuthorisationRepositoryImpl implements AuthorisationRepository {
         accessToken: googleSignInAuthentication?.accessToken,
         idToken: googleSignInAuthentication?.idToken,
       );
-      return await _auth.signInWithCredential(credential);
+      final userCredential = await _auth.signInWithCredential(credential);
+      final userId = userCredential.user?.uid;
+      if (userId != null) {
+        await _writeUserInDB(userId);
+      }
     } on Exception {
       throw UnexpectedEventException();
     }
@@ -109,5 +122,9 @@ class AuthorisationRepositoryImpl implements AuthorisationRepository {
         throw UnexpectedEventException();
       }
     }
+  }
+
+  Future<void> _writeUserInDB(String userId) async {
+    await _database.ref("users/$userId").set({"name": ""});
   }
 }

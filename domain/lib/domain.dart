@@ -13,3 +13,4 @@ export 'package:domain/error/authorisation_error/weak_password_exception.dart';
 export 'package:domain/error/authorisation_error/wrong_password_exception.dart';
 export 'package:domain/error/authorisation_error/invalid_credential_exception.dart';
 export 'package:domain/error/authorisation_error/email_not_verified_exception.dart';
+export 'package:domain/error/common/unsupported_source_exception.dart';

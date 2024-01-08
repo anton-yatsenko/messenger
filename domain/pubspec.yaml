@@ -13,6 +13,7 @@ dependencies:
   firebase_auth: ^4.15.3
   core:
     path: ../core
+  firebase_database: ^10.4.0
 
 dev_dependencies:
   flutter_test:

@@ -11,7 +11,7 @@ abstract interface class AuthorisationRepository {
     required String password,
   });
 
-  Future<UserCredential> signInWithGoogle();
+  Future<void> signInWithGoogle();
 
   Future<void> signOut();
 
