@@ -8,7 +8,9 @@ import '../../state/registration_bloc/registration_bloc.dart';
 
 @RoutePage()
 class RegistrationPage extends StatelessWidget {
-  const RegistrationPage({super.key});
+  const RegistrationPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

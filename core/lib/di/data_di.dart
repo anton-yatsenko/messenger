@@ -1,10 +1,15 @@
 import 'package:core/config/app_config.dart';
 import 'package:core/config/network/dio_config.dart';
+import 'package:data/repositories/chat_repository_impl.dart';
+import 'package:data/repositories/device_media_repository_impl.dart';
+import 'package:domain/repositories/chat_repository.dart';
+import 'package:domain/repositories/device_media_repository.dart';
 import 'package:domain/usecases/auth_use_case/sign_in_use_case.dart';
 import 'package:domain/usecases/export_usecases.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'app_di.dart';
@@ -18,6 +23,7 @@ import 'package:data/repositories/authorisation_repository_impl.dart';
 import 'package:navigation/app_router/app_router.dart';
 
 import 'package:auth/auth.dart';
+import 'package:chat/chat.dart';
 
 import 'firebase_options.dart';
 
@@ -25,7 +31,7 @@ final DataDI dataDI = DataDI();
 
 class DataDI {
   Future<void> initDependencies() async {
-    _initCore();
+    await _initCore();
     _initRepositories();
     _initUsecases();
     _initBlocs();
@@ -41,24 +47,31 @@ class DataDI {
     appLocator.registerSingleton<ImagePicker>(ImagePicker());
   }
 
-  Future<void> _initDataDependencies() async {
-    _initDio();
-    _initApi();
-    //await _initFirebase();
-  }
-
   void _initRepositories() {
     appLocator.registerSingleton<AuthorisationRepository>(
         AuthorisationRepositoryImpl(
             auth: FirebaseAuth.instance, database: FirebaseDatabase.instance));
+    appLocator.registerSingleton<ChatRepository>(ChatRepositoryImpl(
+      auth: FirebaseAuth.instance,
+      database: FirebaseDatabase.instance,
+      storage: FirebaseStorage.instance,
+    ));
+    appLocator.registerSingleton<DeviceMediaRepository>(
+      DeviceMediaRepositoryImpl(
+        imagePicker: appLocator<ImagePicker>(),
+      ),
+    );
   }
 
   void _initUsecases() {
     _initAuthorisationUsecases();
+    _initChatUsecases();
+    _initDeviceMediaUsecases();
   }
 
   void _initBlocs() {
     _initAuthorisationBlocs();
+    _initChatBlocs();
   }
 
   void _initAuthorisationUsecases() {
@@ -94,6 +107,44 @@ class DataDI {
         ));
   }
 
+  _initChatUsecases() {
+    appLocator.registerSingleton<CreateChatUseCase>(
+        CreateChatUseCase(chatRepository: appLocator<ChatRepository>()));
+  }
+
+  _initChatBlocs() {
+    appLocator.registerFactory<AllChatsBloc>(
+      () => AllChatsBloc(
+        appRouter: appLocator<AppRouter>(),
+      ),
+    );
+    appLocator.registerFactory<ChatPageBloc>(
+      () => ChatPageBloc(
+        appRouter: appLocator<AppRouter>(),
+      ),
+    );
+    appLocator.registerFactory<CreateChatBloc>(
+      () => CreateChatBloc(
+        takePhotoUseCase: appLocator<TakePhotoUseCase>(),
+        pickPhotoFromDeviceUseCase: appLocator<PickPhotoFromDeviceUseCase>(),
+        createChatUseCase: appLocator<CreateChatUseCase>(),
+      ),
+    );
+  }
+
+  _initDeviceMediaUsecases() {
+    appLocator.registerSingleton<PickPhotoFromDeviceUseCase>(
+      PickPhotoFromDeviceUseCase(
+        deviceMediaRepository: appLocator<DeviceMediaRepository>(),
+      ),
+    );
+    appLocator.registerSingleton<TakePhotoUseCase>(
+      TakePhotoUseCase(
+        deviceMediaRepository: appLocator<DeviceMediaRepository>(),
+      ),
+    );
+  }
+
   void _initDio() {
     appLocator.registerLazySingleton<DioConfig>(
       () => DioConfig(
@@ -102,19 +153,9 @@ class DataDI {
     );
   }
 
-  void _initApi() {
-    appLocator.registerLazySingleton<ErrorHandler>(
-      ErrorHandler.new,
-    );
+  Future<void> _initDataDependencies() async {
+    _initDio();
 
-    appLocator.registerLazySingleton<ApiProvider>(
-      () => ApiProvider(
-        appLocator<DioConfig>().dio,
-      ),
-    );
+    //await _initFirebase();
   }
-
-// Future<void> _initFirebase() async {
-//   appLocator.registerSingleton<FirebaseApp>(await Firebase.initializeApp());
-// }
 }

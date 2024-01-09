@@ -7,7 +7,7 @@ import '../../repositories/chat_repository.dart';
 class CreateChatUseCase extends FutureUseCase<
     ({
       String chatName,
-      List<String> usersInChat,
+      List<String> members,
       Uint8List? photo,
     }),
     void> {
@@ -20,12 +20,12 @@ class CreateChatUseCase extends FutureUseCase<
   Future<void> execute(
       ({
         String chatName,
-        List<String> usersInChat,
+        List<String> members,
         Uint8List? photo,
       }) input) async {
     await _chatRepository.createChat(
       chatName: input.chatName,
-      usersInChat: input.usersInChat,
+      usersInChat: input.members,
       photo: input.photo,
     );
   }

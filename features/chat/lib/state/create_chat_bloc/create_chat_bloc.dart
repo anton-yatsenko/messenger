@@ -22,16 +22,16 @@ class CreateChatBloc extends Bloc<CreateChatEvent, CreateChatState> {
         _pickPhotoFromDeviceUseCase = pickPhotoFromDeviceUseCase,
         _createChatUseCase = createChatUseCase,
         super(const ChatPageWaiting(photo: null)) {
-    on<CreateChatAttempt>(_onChatPageCreateChat);
+    on<CreateChatAttempt>(_onCreateChatAttempt);
     on<CreateChatPickPhotoFromDevice>(_onCreateChatPickPhotoFromDevice);
     on<CreateChatTakePhoto>(_onCreateChatTakePhoto);
   }
 
-  _onChatPageCreateChat(event, emit) async {
+  _onCreateChatAttempt(event, emit) async {
     if (event is CreateChatAttempt) {
       await _createChatUseCase.execute((
         chatName: event.chatName,
-        usersInChat: event.usersInChat,
+        members: event.members,
         photo: state.photo
       ));
     }

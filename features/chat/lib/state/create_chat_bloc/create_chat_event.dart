@@ -5,11 +5,11 @@ abstract class CreateChatEvent {}
 
 class CreateChatAttempt extends CreateChatEvent {
   final String chatName;
-  final List<String> usersInChat;
+  final List<String> members;
 
   CreateChatAttempt({
     required this.chatName,
-    required this.usersInChat,
+    required this.members,
   });
 }
 
