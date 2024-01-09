@@ -1,18 +1,14 @@
-import 'dart:typed_data';
+import 'package:data/entities/message_entity.dart';
 
-import 'package:json_annotation/json_annotation.dart';
-
-part 'chat_entity.g.dart';
-
-@JsonSerializable()
 class ChatEntity {
   final String name;
-  final List<String> usersInChat;
+  final List<String> members;
+  final String? photoPathInCloud;
+  final List<MessageEntity>? messages;
 
-  ChatEntity({required this.name, required this.usersInChat});
-
-  factory ChatEntity.fromJson(Map<String, dynamic> json) =>
-      _$ChatEntityFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ChatEntityToJson(this);
+  ChatEntity(
+      {required this.name,
+      required this.members,
+      this.photoPathInCloud,
+      this.messages});
 }
