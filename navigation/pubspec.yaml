@@ -18,6 +18,9 @@ dependencies:
     path: ../domain
   auth:
     path: ../features/auth
+  chat:
+    path: ../features/chat
+  firebase_auth: ^4.16.0
 
 dev_dependencies:
   flutter_lints: ^2.0.1

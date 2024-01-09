@@ -27,6 +27,7 @@ dependencies:
   easy_localization: ^3.0.3
   firebase_database: ^10.4.0
   image_picker: ^1.0.6
+  firebase_storage: ^11.6.0
 
 dev_dependencies:
   flutter_test:
