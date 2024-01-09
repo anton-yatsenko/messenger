@@ -1,3 +1,4 @@
+import "package:core/constants/api_constants.dart";
 import "package:domain/domain.dart";
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -125,6 +126,6 @@ class AuthorisationRepositoryImpl implements AuthorisationRepository {
   }
 
   Future<void> _writeUserInDB(String userId) async {
-    await _database.ref("users/$userId").set({"name": ""});
+    await _database.ref("${ApiConstants.users}/$userId").set({"name": ""});
   }
 }
