@@ -1,0 +1,1 @@
+class SlowConnectionException implements Exception {}

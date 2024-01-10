@@ -1,0 +1,1 @@
+class TryAgainException implements Exception {}

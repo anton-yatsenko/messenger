@@ -1,0 +1,1 @@
+class InternalErrorException implements Exception {}

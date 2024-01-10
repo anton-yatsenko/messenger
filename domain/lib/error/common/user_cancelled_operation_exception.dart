@@ -1,0 +1,1 @@
+class UserCancelledOperationException implements Exception {}
