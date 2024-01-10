@@ -9,7 +9,7 @@ import "package:domain/error/authorisation_error/weak_password_exception.dart";
 
 import "package:domain/error/authorisation_error/user_disabled_exception.dart";
 import "package:domain/repositories/authorisation_repository.dart";
-import "package:domain/error/authorisation_error/unexpected_event_error.dart";
+import "package:domain/error/authorisation_error/unexpected_event_exception.dart";
 import "package:firebase_database/firebase_database.dart";
 import "package:google_sign_in/google_sign_in.dart";
 

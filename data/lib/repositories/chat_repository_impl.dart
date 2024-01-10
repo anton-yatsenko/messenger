@@ -63,7 +63,7 @@ class ChatRepositoryImpl implements ChatRepository {
           .ref()
           .child(ApiConstants.users)
           .child(userId)
-          .child(ApiConstants.chats);
+          .child(ApiConstants.chatIds);
       final newChatRef = chatsRef.push();
       await newChatRef.update(ChatMapper.toJson(chat));
       final newChatId = newChatRef.key;
