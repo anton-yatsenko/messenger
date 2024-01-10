@@ -24,6 +24,7 @@ import 'package:navigation/app_router/app_router.dart';
 
 import 'package:auth/auth.dart';
 import 'package:chat/chat.dart';
+import 'package:data/data.dart';
 
 import 'firebase_options.dart';
 
@@ -61,6 +62,18 @@ class DataDI {
         imagePicker: appLocator<ImagePicker>(),
       ),
     );
+    appLocator.registerSingleton<RemoteMediaRepository>(
+      RemoteMediaRepositoryImpl(
+        storage: FirebaseStorage.instance,
+      ),
+    );
+    appLocator.registerSingleton<UserRepository>(
+      UserRepositoryImpl(
+        storage: FirebaseStorage.instance,
+        auth: FirebaseAuth.instance,
+        database: FirebaseDatabase.instance,
+      ),
+    );
   }
 
   void _initUsecases() {
@@ -72,6 +85,14 @@ class DataDI {
   void _initBlocs() {
     _initAuthorisationBlocs();
     _initChatBlocs();
+  }
+
+  void _initMappers() {
+    appLocator.registerSingleton<UserMapper>(
+      UserMapper(
+        remoteMediaRepository: appLocator<RemoteMediaRepository>(),
+      ),
+    );
   }
 
   void _initAuthorisationUsecases() {
