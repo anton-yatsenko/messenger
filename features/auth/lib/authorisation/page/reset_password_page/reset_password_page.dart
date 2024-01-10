@@ -1,5 +1,5 @@
-import 'package:auth/authorisation/state/reset_password_bloc/reset_password_bloc.dart';
-import 'package:auth/authorisation/widget/reset_password_page/reset_password_view.dart';
+import 'package:auth/authorisation/bloc/reset_password_bloc/reset_password_bloc.dart';
+import 'package:auth/authorisation/page/reset_password_page/reset_password_view.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';

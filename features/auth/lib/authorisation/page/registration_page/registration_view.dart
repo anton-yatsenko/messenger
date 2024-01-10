@@ -1,4 +1,4 @@
-import 'package:auth/authorisation/widget/registration_page/registration_form.dart';
+import 'package:auth/authorisation/page/registration_page/registration_form.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationView extends StatelessWidget {

@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../state/authorisation_bloc/authorisation_bloc.dart';
+import '../../bloc/authorisation_bloc/authorisation_bloc.dart';
 
 class AuthorisationForm extends StatefulWidget {
   const AuthorisationForm({super.key});

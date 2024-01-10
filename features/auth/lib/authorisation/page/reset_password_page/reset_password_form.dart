@@ -1,5 +1,5 @@
-import 'package:auth/authorisation/state/registration_bloc/registration_bloc.dart';
-import 'package:auth/authorisation/state/reset_password_bloc/reset_password_bloc.dart';
+import 'package:auth/authorisation/bloc/registration_bloc/registration_bloc.dart';
+import 'package:auth/authorisation/bloc/reset_password_bloc/reset_password_bloc.dart';
 import 'package:core/core.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';

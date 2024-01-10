@@ -8,15 +8,15 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auth/authorisation/widget/auth_page/authorisation_page.dart'
+import 'package:auth/authorisation/page/auth_page/authorisation_page.dart'
     as _i1;
-import 'package:auth/authorisation/widget/password_reset_success_popup_dialog.dart'
+import 'package:auth/authorisation/page/password_reset_success_popup_dialog.dart'
     as _i3;
-import 'package:auth/authorisation/widget/registration_page/registration_page.dart'
+import 'package:auth/authorisation/page/registration_page/registration_page.dart'
     as _i4;
-import 'package:auth/authorisation/widget/registration_success_popup_dialog.dart'
+import 'package:auth/authorisation/page/registration_success_popup_dialog.dart'
     as _i5;
-import 'package:auth/authorisation/widget/reset_password_page/reset_password_page.dart'
+import 'package:auth/authorisation/page/reset_password_page/reset_password_page.dart'
     as _i2;
 import 'package:auto_route/auto_route.dart' as _i6;
 

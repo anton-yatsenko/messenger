@@ -1,4 +1,4 @@
-import 'package:auth/authorisation/widget/reset_password_page/reset_password_form.dart';
+import 'package:auth/authorisation/page/reset_password_page/reset_password_form.dart';
 import 'package:flutter/material.dart';
 
 class ResetPasswordView extends StatelessWidget {

@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../state/registration_bloc/registration_bloc.dart';
+import '../../bloc/registration_bloc/registration_bloc.dart';
 
 class RegistrationForm extends StatefulWidget {
   const RegistrationForm({super.key});

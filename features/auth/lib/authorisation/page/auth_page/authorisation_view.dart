@@ -1,5 +1,5 @@
-import 'package:auth/authorisation/widget/auth_page/authorisation_form.dart';
-import 'package:auth/authorisation/widget/auth_page/lower_part.dart';
+import 'package:auth/authorisation/page/auth_page/authorisation_form.dart';
+import 'package:auth/authorisation/page/auth_page/lower_part.dart';
 import 'package:flutter/material.dart';
 
 class AuthorisationView extends StatelessWidget {
