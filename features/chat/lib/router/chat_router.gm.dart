@@ -9,9 +9,9 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i4;
-import 'package:chat/widget/all_chats_page/all_chats_page.dart' as _i1;
-import 'package:chat/widget/chat_page/chat_page.dart' as _i2;
-import 'package:chat/widget/create_chat_page/create_chat_page.dart' as _i3;
+import 'package:chat/page/all_chats_page/all_chats_page.dart' as _i1;
+import 'package:chat/page/chat_page/chat_page.dart' as _i2;
+import 'package:chat/page/create_chat_page/create_chat_page.dart' as _i3;
 
 abstract class $ChatRouter extends _i4.AutoRouterModule {
   @override

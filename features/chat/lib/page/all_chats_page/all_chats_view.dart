@@ -2,6 +2,8 @@ import 'package:chat/chat.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/all_chats_bloc/all_chats_bloc.dart';
+
 class AllChatsView extends StatelessWidget {
   const AllChatsView({super.key});
 
