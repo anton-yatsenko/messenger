@@ -13,7 +13,9 @@ class ChatMapper {
 
     return {
       'name': chatEntity.name,
-      'members': chatEntity.members,
+      'members': {
+        for (var member in chatEntity.members) member: true,
+      },
       'photoPathInCloud': chatEntity.photoPathInCloud,
       'messages': messagesJson,
     };
@@ -28,7 +30,7 @@ class ChatMapper {
 
     return ChatEntity(
       name: json['name'],
-      members: List<String>.from(json['members']),
+      members: List<String>.from(json['members'].keys),
       photoPathInCloud: json['photoPathInCloud'],
       messages: messagesList,
     );

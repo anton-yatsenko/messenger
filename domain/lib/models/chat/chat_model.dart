@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../user_model.dart';
+import '../user/user_model.dart';
 
 @immutable
 class ChatModel {
