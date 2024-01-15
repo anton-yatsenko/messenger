@@ -1,4 +1,5 @@
 import "package:core/constants/api_constants.dart";
+import "package:data/entities/user_entity.dart";
 import "package:domain/domain.dart";
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,28 +14,34 @@ import "package:domain/error/authorisation_error/unexpected_event_exception.dart
 import "package:firebase_database/firebase_database.dart";
 import "package:google_sign_in/google_sign_in.dart";
 
-class AuthorisationRepositoryImpl implements AuthorisationRepository {
-  final FirebaseAuth _auth;
-  final FirebaseDatabase _database;
+import "../providers/interface/authorisation_provider.dart";
 
-  AuthorisationRepositoryImpl(
-      {required FirebaseAuth auth, required FirebaseDatabase database})
-      : _auth = auth,
-        _database = database;
+class AuthorisationRepositoryImpl implements AuthorisationRepository {
+  final AuthorisationProvider _authorisationProvider;
+
+  AuthorisationRepositoryImpl({
+    required AuthorisationProvider authorisationProvider,
+  }) : _authorisationProvider = authorisationProvider;
 
   @override
-  Future<UserCredential> createUserWithEmailAndPassword(
-      {required String email, required String password}) async {
+  Future<UserCredential> createUserWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
     try {
-      final credential = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      final user = credential.user;
+      final userCredential = await _authorisationProvider
+          .createUserWithEmailAndPassword(email: email, password: password);
+      final user = userCredential.user;
       await user?.sendEmailVerification();
-      final userId = credential.user?.uid;
-      if (userId != null) {
-        await _writeUserInDB(userId);
+      final userId = userCredential.user?.uid;
+      final userEmail = userCredential.user?.email;
+      if (userId != null && userEmail != null) {
+        final user = UserEntity(id: userId, email: userEmail);
+        await _authorisationProvider.writeUserInDB(
+          userEntity: user,
+        );
       }
-      return credential;
+      return userCredential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw WeakPasswordException();
@@ -59,10 +66,15 @@ class AuthorisationRepositoryImpl implements AuthorisationRepository {
         accessToken: googleSignInAuthentication?.accessToken,
         idToken: googleSignInAuthentication?.idToken,
       );
-      final userCredential = await _auth.signInWithCredential(credential);
+      final userCredential = await _authorisationProvider.signInWithCredential(
+          credential: credential);
       final userId = userCredential.user?.uid;
-      if (userId != null) {
-        await _writeUserInDB(userId);
+      final email = userCredential.user?.email;
+      if (userId != null && email != null) {
+        final user = UserEntity(id: userId, email: email);
+        await _authorisationProvider.writeUserInDB(
+          userEntity: user,
+        );
       }
     } on Exception {
       throw UnexpectedEventException();
@@ -70,13 +82,16 @@ class AuthorisationRepositoryImpl implements AuthorisationRepository {
   }
 
   @override
-  Future<void> signIn({required String email, required String password}) async {
+  Future<void> signIn({
+    required String email,
+    required String password,
+  }) async {
     try {
-      final credential = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+      final credential = await _authorisationProvider
+          .signInWithEmailAndPassword(email: email, password: password);
       if (credential.user?.emailVerified == false ||
           credential.user?.emailVerified == null) {
-        await signOut();
+        await _authorisationProvider.signOut();
         throw EmailNotVerifiedException();
       }
     } on FirebaseAuthException catch (e) {
@@ -93,27 +108,9 @@ class AuthorisationRepositoryImpl implements AuthorisationRepository {
   }
 
   @override
-  Future<void> updateUserPhoto({required String photoURL}) async {
-    final user = _auth.currentUser;
-    if (user != null) {
-      user.updatePhotoURL(photoURL);
-    }
-  }
-
-  Future<UserCredential?> _reauthenticate(AuthCredential credential) async {
-    final user = _auth.currentUser;
-    return await user?.reauthenticateWithCredential(credential);
-  }
-
-  @override
-  Future<void> signOut() async {
-    await _auth.signOut();
-  }
-
-  @override
   Future<void> resetPassword({required String email}) async {
     try {
-      await _auth.sendPasswordResetEmail(email: email);
+      await _authorisationProvider.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
         throw InvalidEmailException();
@@ -123,9 +120,5 @@ class AuthorisationRepositoryImpl implements AuthorisationRepository {
         throw UnexpectedEventException();
       }
     }
-  }
-
-  Future<void> _writeUserInDB(String userId) async {
-    await _database.ref("${ApiConstants.users}/$userId").set({"name": ""});
   }
 }

@@ -2,15 +2,16 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:data/providers/interface/remote_media_provider.dart';
 import 'package:domain/domain.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:core/core.dart';
 import 'package:flutter/painting.dart';
 
-class RemoteMediaRepositoryImpl implements RemoteMediaRepository {
+class RemoteMediaProviderImpl implements RemoteMediaProvider {
   final FirebaseStorage _storage;
 
-  RemoteMediaRepositoryImpl({
+  RemoteMediaProviderImpl({
     required FirebaseStorage storage,
   }) : _storage = storage;
 
