@@ -1,5 +1,9 @@
 import 'package:core/config/app_config.dart';
 import 'package:core/config/network/dio_config.dart';
+import 'package:data/providers/interface/authorisation_provider.dart';
+import 'package:data/providers/interface/remote_media_provider.dart';
+import 'package:data/providers/interface/user_provider.dart';
+import 'package:data/providers/database_references.dart';
 import 'package:data/repositories/chat_repository_impl.dart';
 import 'package:data/repositories/device_media_repository_impl.dart';
 import 'package:domain/repositories/chat_repository.dart';
@@ -18,7 +22,7 @@ import 'package:domain/usecases/auth_use_case/create_user_with_email_and_passwor
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:data/errors/error_handler.dart';
-import 'package:data/providers/api_provider.dart';
+
 import 'package:data/repositories/authorisation_repository_impl.dart';
 import 'package:navigation/app_router/app_router.dart';
 
@@ -33,6 +37,7 @@ final DataDI dataDI = DataDI();
 class DataDI {
   Future<void> initDependencies() async {
     await _initCore();
+    _initProviders();
     _initRepositories();
     _initUsecases();
     _initBlocs();
@@ -40,7 +45,6 @@ class DataDI {
 
   Future<void> _initCore() async {
     await EasyLocalization.ensureInitialized();
-
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
@@ -48,10 +52,39 @@ class DataDI {
     appLocator.registerSingleton<ImagePicker>(ImagePicker());
   }
 
+  void _initProviders() {
+    appLocator.registerSingleton<DatabaseReferences>(
+      DatabaseReferences(
+        database: FirebaseDatabase.instance,
+      ),
+    );
+    appLocator.registerSingleton<AuthorisationProvider>(
+      AuthorisationProviderImpl(
+        auth: FirebaseAuth.instance,
+        database: FirebaseDatabase.instance,
+        references: appLocator<DatabaseReferences>(),
+      ),
+    );
+    appLocator.registerSingleton<UserProvider>(
+      UserProviderImpl(
+        auth: FirebaseAuth.instance,
+        database: FirebaseDatabase.instance,
+        storage: FirebaseStorage.instance,
+        references: appLocator<DatabaseReferences>(),
+      ),
+    );
+    appLocator.registerSingleton<RemoteMediaProvider>(
+      RemoteMediaProviderImpl(
+        storage: FirebaseStorage.instance,
+      ),
+    );
+  }
+
   void _initRepositories() {
-    appLocator.registerSingleton<AuthorisationRepository>(
-        AuthorisationRepositoryImpl(
-            auth: FirebaseAuth.instance, database: FirebaseDatabase.instance));
+    appLocator
+        .registerSingleton<AuthorisationRepository>(AuthorisationRepositoryImpl(
+      authorisationProvider: appLocator<AuthorisationProvider>(),
+    ));
     appLocator.registerSingleton<ChatRepository>(ChatRepositoryImpl(
       auth: FirebaseAuth.instance,
       database: FirebaseDatabase.instance,
@@ -62,16 +95,11 @@ class DataDI {
         imagePicker: appLocator<ImagePicker>(),
       ),
     );
-    appLocator.registerSingleton<RemoteMediaRepository>(
-      RemoteMediaRepositoryImpl(
-        storage: FirebaseStorage.instance,
-      ),
-    );
+
     appLocator.registerSingleton<UserRepository>(
       UserRepositoryImpl(
-        storage: FirebaseStorage.instance,
-        auth: FirebaseAuth.instance,
-        database: FirebaseDatabase.instance,
+        userProvider: appLocator<UserProvider>(),
+        remoteMediaProvider: appLocator<RemoteMediaProvider>(),
       ),
     );
   }
@@ -80,19 +108,12 @@ class DataDI {
     _initAuthorisationUsecases();
     _initChatUsecases();
     _initDeviceMediaUsecases();
+    _initUserUsecases();
   }
 
   void _initBlocs() {
     _initAuthorisationBlocs();
     _initChatBlocs();
-  }
-
-  void _initMappers() {
-    appLocator.registerSingleton<UserMapper>(
-      UserMapper(
-        remoteMediaRepository: appLocator<RemoteMediaRepository>(),
-      ),
-    );
   }
 
   void _initAuthorisationUsecases() {
@@ -103,11 +124,36 @@ class DataDI {
         SignInWithGoogleUseCase(appLocator<AuthorisationRepository>()));
     appLocator.registerSingleton<SignInUseCase>(SignInUseCase(
         authorisationRepository: appLocator<AuthorisationRepository>()));
-    appLocator.registerSingleton<SignOutUseCase>(SignOutUseCase(
-      authorisationRepository: appLocator<AuthorisationRepository>(),
-    ));
     appLocator.registerSingleton<ResetPasswordUseCase>(ResetPasswordUseCase(
         authorisationRepository: appLocator<AuthorisationRepository>()));
+  }
+
+  void _initUserUsecases() {
+    appLocator.registerSingleton<DeleteUserUseCase>(
+      DeleteUserUseCase(
+        userRepository: appLocator<UserRepository>(),
+      ),
+    );
+    appLocator.registerSingleton<GetAllUsersUseCase>(
+      GetAllUsersUseCase(
+        userRepository: appLocator<UserRepository>(),
+      ),
+    );
+    appLocator.registerSingleton<GetContactsUseCase>(
+      GetContactsUseCase(
+        userRepository: appLocator<UserRepository>(),
+      ),
+    );
+    appLocator.registerSingleton<GetCurrentUserInfoUseCase>(
+      GetCurrentUserInfoUseCase(
+        userRepository: appLocator<UserRepository>(),
+      ),
+    );
+    appLocator.registerSingleton<SignOutUseCase>(
+      SignOutUseCase(
+        userRepository: appLocator<UserRepository>(),
+      ),
+    );
   }
 
   void _initAuthorisationBlocs() {
@@ -137,6 +183,7 @@ class DataDI {
     appLocator.registerFactory<AllChatsBloc>(
       () => AllChatsBloc(
         appRouter: appLocator<AppRouter>(),
+        signOutUseCase: appLocator<SignOutUseCase>(),
       ),
     );
     appLocator.registerFactory<ChatPageBloc>(
@@ -149,6 +196,11 @@ class DataDI {
         takePhotoUseCase: appLocator<TakePhotoUseCase>(),
         pickPhotoFromDeviceUseCase: appLocator<PickPhotoFromDeviceUseCase>(),
         createChatUseCase: appLocator<CreateChatUseCase>(),
+      ),
+    );
+    appLocator.registerFactory<ContactBloc>(
+      () => ContactBloc(
+        getContactsUseCase: appLocator<GetContactsUseCase>(),
       ),
     );
   }
@@ -164,19 +216,5 @@ class DataDI {
         deviceMediaRepository: appLocator<DeviceMediaRepository>(),
       ),
     );
-  }
-
-  void _initDio() {
-    appLocator.registerLazySingleton<DioConfig>(
-      () => DioConfig(
-        appConfig: appLocator<AppConfig>(),
-      ),
-    );
-  }
-
-  Future<void> _initDataDependencies() async {
-    _initDio();
-
-    //await _initFirebase();
   }
 }

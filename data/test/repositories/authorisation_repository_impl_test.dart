@@ -5,7 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   final auth = MockFirebaseAuth();
-  final authRepo = AuthorisationRepositoryImpl(auth: auth, database: );
+  final authRepo =
+      AuthorisationRepositoryImpl(authorisationProvider: );
   group('auth repo tests', () {
     group('create user tests', () {
       test('create user', () async {

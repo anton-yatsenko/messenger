@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
 import 'package:core/constants/api_constants.dart';
 import 'package:data/repositories/chat_repository_impl.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database_mocks/firebase_database_mocks.dart';
 import 'package:firebase_storage_mocks/firebase_storage_mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -40,9 +42,16 @@ void main() {
         //     .ref("${ApiConstants.users}/${mockUser.uid}")
         //     .set({"name": ""});
 
-        final data = await database.ref().get();
-        print(data.value);
+        final data = await database.ref().child(ApiConstants.chats).get();
+        for (final i in data.children) {
+          print(i.value);
+        }
+        //DataSnapshot
+        print(data.value.runtimeType /*as Map<String, dynamic>)["name"]*/);
       });
+    });
+    group('get chat tests', () {
+      test('get all user chats', () => null);
     });
   });
 }
