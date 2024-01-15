@@ -4,3 +4,5 @@ part of 'all_chats_bloc.dart';
 abstract class AllChatsEvent {}
 
 class AllChatsRouteToCreateChatPage extends AllChatsEvent {}
+
+class AllChatsSignOut extends AllChatsEvent {}
