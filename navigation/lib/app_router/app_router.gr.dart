@@ -17,5 +17,6 @@ abstract class _$AppRouter extends RootStackRouter {
   final Map<String, PageFactory> pagesMap = {
     ...AuthRouter().pagesMap,
     ...ChatRouter().pagesMap,
+    ...CoreUiRouter().pagesMap,
   };
 }
