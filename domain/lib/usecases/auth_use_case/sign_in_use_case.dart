@@ -10,7 +10,7 @@ class SignInUseCase
       : _authorisationRepository = authorisationRepository;
 
   @override
-  execute(input) async {
+  Future<void> execute(input) async {
     try {
       await _authorisationRepository.signIn(
         email: input.email,

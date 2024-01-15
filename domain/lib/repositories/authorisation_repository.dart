@@ -13,11 +13,5 @@ abstract interface class AuthorisationRepository {
 
   Future<void> signInWithGoogle();
 
-  Future<void> signOut();
-
-  Future<void> updateUserPhoto({
-    required String photoURL,
-  });
-
   Future<void> resetPassword({required String email});
 }

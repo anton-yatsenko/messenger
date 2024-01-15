@@ -10,4 +10,7 @@ abstract interface class UserRepository {
   Future<List<UserModel>> getContacts();
 
   Future<UserModel> getCurrentUserInfo();
+
+  ///[allContactIds] must include all contactIds for current user
+  Future<List<UserModel>> addContacts({required List<String> allContactIds});
 }

@@ -10,7 +10,7 @@ final class GetAllUsersUseCase extends FutureUseCase<void, List<UserModel>> {
       : _userRepository = userRepository;
 
   @override
-  Future<List<UserModel>> execute(void input) async {
-    return await _userRepository.getAllUsers();
+  Future<List<UserModel>> execute(void input) {
+    return _userRepository.getAllUsers();
   }
 }

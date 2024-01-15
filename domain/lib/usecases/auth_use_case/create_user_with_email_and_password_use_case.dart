@@ -11,7 +11,7 @@ class CreateUserWithEmailAndPasswordUseCase
       : _authorisationRepository = authorisationRepository;
 
   @override
-  execute(input) async {
+  Future<UserCredential> execute(input) async {
     try {
       return await _authorisationRepository.createUserWithEmailAndPassword(
         email: input.email,
