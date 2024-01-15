@@ -1,8 +1,7 @@
 class UserEntity {
   final String id;
   final String email;
-  final List<String>? chats;
-  final List<String>? contacts;
+
   final String? name;
   final String? surname;
   final DateTime? dateOfBirth;
@@ -12,8 +11,6 @@ class UserEntity {
   UserEntity({
     required this.id,
     required this.email,
-    this.chats,
-    this.contacts,
     this.name,
     this.surname,
     this.dateOfBirth,

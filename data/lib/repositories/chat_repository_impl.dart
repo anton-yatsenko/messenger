@@ -34,42 +34,44 @@ class ChatRepositoryImpl implements ChatRepository {
     required List<String> usersInChat,
     Uint8List? photo,
   }) async {
-    final userId = _auth.currentUser?.uid;
-    late final String? photoPath;
-    if (userId != null) {
-      if (photo != null) {
-        final userProfilePictureRef = _storage
-            .ref()
-            .child(ApiConstants.users)
-            .child(userId)
-            .child(ApiConstants.profilePicture);
-        try {
-          userProfilePictureRef.putData(photo);
-        } on Exception {
-          throw UnexpectedEventException();
-        }
-        photoPath = userProfilePictureRef.fullPath;
-      } else {
-        photoPath = null;
-      }
-      usersInChat.add(userId);
-      final chat = ChatEntity(
-        name: chatName,
-        members: usersInChat,
-        photoPathInCloud: photoPath,
-      );
-      final chatsRef = _database.ref().child(ApiConstants.chats);
-      final userChatsRef = _database
-          .ref()
-          .child(ApiConstants.users)
-          .child(userId)
-          .child(ApiConstants.chatIds);
-      final newChatRef = chatsRef.push();
-      await newChatRef.update(ChatMapper.toJson(chat));
-      final newChatId = newChatRef.key;
-      if (newChatId != null) {
-        await userChatsRef.update({newChatId: true});
-      }
-    }
+    // TODO: implement getChatSnippets
+    throw UnimplementedError();
+    // final userId = _auth.currentUser?.uid;
+    // late final String? photoPath;
+    // if (userId != null) {
+    //   if (photo != null) {
+    //     final userProfilePictureRef = _storage
+    //         .ref()
+    //         .child(ApiConstants.users)
+    //         .child(userId)
+    //         .child(ApiConstants.profilePicture);
+    //     try {
+    //       userProfilePictureRef.putData(photo);
+    //     } on Exception {
+    //       throw UnexpectedEventException();
+    //     }
+    //     photoPath = userProfilePictureRef.fullPath;
+    //   } else {
+    //     photoPath = null;
+    //   }
+    //   usersInChat.add(userId);
+    //   final chat = ChatEntity(
+    //     name: chatName,
+    //     members: usersInChat,
+    //     photoPathInCloud: photoPath,
+    //   );
+    //   final chatsRef = _database.ref().child(ApiConstants.chats);
+    //   final userChatsRef = _database
+    //       .ref()
+    //       .child(ApiConstants.users)
+    //       .child(userId)
+    //       .child(ApiConstants.chatIds);
+    //   final newChatRef = chatsRef.push();
+    //   await newChatRef.update(ChatMapper.toJson(chat));
+    //   final newChatId = newChatRef.key;
+    //   if (newChatId != null) {
+    //     await userChatsRef.update({newChatId: true});
+    //   }
+    // }
   }
 }
