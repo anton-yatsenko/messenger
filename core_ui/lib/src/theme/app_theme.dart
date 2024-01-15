@@ -18,7 +18,7 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
 
 final _lightColorScheme = ColorScheme.fromSeed(
   seedColor: Colors.blue,
-  background: Colors.blue.shade200,
+  background: Colors.blue.shade50,
   tertiary: Colors.blue.shade50,
   primaryContainer: Colors.white,
   //onPrimaryContainer:
