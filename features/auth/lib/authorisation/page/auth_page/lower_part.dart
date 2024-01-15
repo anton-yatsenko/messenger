@@ -1,4 +1,5 @@
 import 'package:auth/auth.dart';
+import 'package:core_ui/core_ui.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,8 +22,8 @@ class LowerPart extends StatelessWidget {
                 context.setLocale(Locale("ru", "RU"));
               },
               child: Image.asset(
-                'lib/src/assets/russian_flag.gif',
-                package: 'core_ui',
+                AppAssets.russianFlagGif,
+                package: AppAssets.coreUiPackageName,
                 width: 40,
               ),
             ),
@@ -31,8 +32,8 @@ class LowerPart extends StatelessWidget {
                 context.setLocale(Locale("en", "US"));
               },
               child: Image.asset(
-                'lib/src/assets/english_flag.gif',
-                package: 'core_ui',
+                AppAssets.englishFlagGif,
+                package: AppAssets.coreUiPackageName,
                 width: 40,
                 height: 40,
               ),
@@ -49,8 +50,8 @@ class LowerPart extends StatelessWidget {
                     width: 10,
                   ),
                   Image.asset(
-                    'lib/src/assets/google_logo.png',
-                    package: 'core_ui',
+                    AppAssets.googleLogo,
+                    package: AppAssets.coreUiPackageName,
                     width: 18,
                   ),
                 ],

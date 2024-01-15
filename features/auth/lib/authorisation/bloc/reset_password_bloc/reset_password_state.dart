@@ -11,7 +11,10 @@ final class ResetPasswordSuccess extends ResetPasswordState {}
 
 final class ResetPasswordInProgress extends ResetPasswordState {}
 
-final class ResetPasswordInvalidEmail extends ResetPasswordState {}
+final class ResetPasswordInvalidEmail extends ResetPasswordState {
+  final String errorMsg =
+      "auth.forgot_password_page.invalid_email_error_msg".tr();
+}
 
 final class ResetPasswordUserNotFound extends ResetPasswordState {}
 

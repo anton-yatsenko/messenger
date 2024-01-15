@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:domain/domain.dart';
 
 import "package:domain/usecases/export_usecases.dart";
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/navigation.dart';
 

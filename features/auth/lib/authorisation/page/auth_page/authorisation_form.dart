@@ -128,25 +128,9 @@ class _AuthorisationFormState extends State<AuthorisationForm> {
               .bodyMedium
               ?.copyWith(color: Colors.red);
           late final Widget child;
-          if (state is AuthorisationInvalidCredential) {
+          if (state is AuthorisationError) {
             child = Text(
-              "auth.auth_page.error_messages.invalid_email_and_password_comb_msg"
-                  .tr(),
-              style: textStyle,
-            );
-          } else if (state is AuthorisationUserDisabled) {
-            child = Text(
-              "auth.auth_page.error_messages.blocked_user_msg".tr(),
-              style: textStyle,
-            );
-          } else if (state is AuthorisationUnexpectedEvent) {
-            child = Text(
-              "auth.auth_page.error_messages.unexpected_email_msg".tr(),
-              style: textStyle,
-            );
-          } else if (state is AuthorisationEmailNotVerified) {
-            child = Text(
-              "auth.auth_page.error_messages.email_not_verified_msg".tr(),
+              state.errorMsg,
               style: textStyle,
             );
           } else {

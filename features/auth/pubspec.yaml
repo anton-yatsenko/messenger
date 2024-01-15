@@ -39,7 +39,8 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - packages/core_ui/src/assets/russian_flag.png
+    - packages/core_ui/src/assets/russian_flag.gif
+    - packages/core_ui/src/assets/english_flag.gif
     - packages/core_ui/src/assets/google_logo.png
 
 

@@ -79,7 +79,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   }
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: spaceSize,
               ),
               BlocBuilder<RegistrationBloc, RegistrationState>(
@@ -89,25 +89,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
                       .bodyMedium
                       ?.copyWith(color: Colors.red);
                   late final Widget child;
-                  if (state is RegistrationWeakPassword) {
+                  if (state is RegistrationError) {
                     child = Text(
-                      "auth.reg_page.error_messages.weak_password_msg".tr(),
-                      style: textStyle,
-                    );
-                  } else if (state is RegistrationEmailAlreadyInUse) {
-                    child = Text(
-                      "auth.reg_page.error_messages.email_already_in_use".tr(),
-                      style: textStyle,
-                    );
-                  } else if (state is RegistrationInvalidEmail) {
-                    child = Text(
-                      "auth.reg_page.error_messages.invalid_email_error_msg"
-                          .tr(),
-                      style: textStyle,
-                    );
-                  } else if (state is RegistrationUnexpectedEvent) {
-                    child = Text(
-                      "auth.reg_page.error_messages.unexpected_event_msg".tr(),
+                      state.errorMsg,
                       style: textStyle,
                     );
                   } else {
@@ -124,7 +108,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
               BlocBuilder<RegistrationBloc, RegistrationState>(
                   builder: (context, state) {
                 if (state is RegistrationInProgress) {
-                  return FilledButton(
+                  return const FilledButton(
                     onPressed: null,
                     child: LinearProgressIndicator(),
                   );

@@ -1,4 +1,5 @@
 import 'package:auth/router/auth_router.gm.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:domain/domain.dart';
 
@@ -43,9 +44,7 @@ class AuthorisationBloc extends Bloc<AuthorisationEvent, AuthorisationState> {
         _appRouter.replaceAll([const AllChatsRoute()]);
         emit(AuthorisationSuccess());
       } on Exception catch (e) {
-        if (e is InvalidEmailException) {
-          emit(AuthorisationInvalidEmail());
-        } else if (e is UserDisabledException) {
+        if (e is UserDisabledException) {
           emit(AuthorisationUserDisabled());
         } else if (e is InvalidCredentialException) {
           emit(AuthorisationInvalidCredential());

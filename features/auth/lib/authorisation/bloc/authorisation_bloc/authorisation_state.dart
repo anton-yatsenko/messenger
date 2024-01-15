@@ -9,16 +9,29 @@ class AuthorisationSuccess extends AuthorisationState {}
 
 class AuthorisationInProgress extends AuthorisationState {}
 
-class AuthorisationWrongPassword extends AuthorisationState {}
+sealed class AuthorisationError extends AuthorisationState {
+  final String errorMsg = '';
+}
 
-class AuthorisationInvalidEmail extends AuthorisationState {}
+class AuthorisationUserDisabled extends AuthorisationError {
+  @override
+  String get errorMsg => "auth.auth_page.error_messages.blocked_user_msg".tr();
+}
 
-class AuthorisationUserDisabled extends AuthorisationState {}
+class AuthorisationInvalidCredential extends AuthorisationError {
+  @override
+  String get errorMsg =>
+      "auth.auth_page.error_messages.invalid_email_and_password_comb_msg".tr();
+}
 
-class AuthorisationUserNotFound extends AuthorisationState {}
+class AuthorisationUnexpectedEvent extends AuthorisationError {
+  @override
+  String get errorMsg =>
+      "auth.auth_page.error_messages.unexpected_email_msg".tr();
+}
 
-class AuthorisationInvalidCredential extends AuthorisationState {}
-
-class AuthorisationUnexpectedEvent extends AuthorisationState {}
-
-class AuthorisationEmailNotVerified extends AuthorisationState {}
+class AuthorisationEmailNotVerified extends AuthorisationError {
+  @override
+  String get errorMsg =>
+      "auth.auth_page.error_messages.email_not_verified_msg".tr();
+}

@@ -60,7 +60,7 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
                   ?.copyWith(color: Colors.red);
               if (state is ResetPasswordInvalidEmail) {
                 child = Text(
-                  "auth.forgot_password_page.invalid_email_error_msg".tr(),
+                  state.errorMsg,
                   style: textStyle,
                 );
               } else {
@@ -79,7 +79,7 @@ class _ResetPasswordFormState extends State<ResetPasswordForm> {
           BlocBuilder<ResetPasswordBloc, ResetPasswordState>(
             builder: (context, state) {
               if (state is RegistrationInProgress) {
-                return FilledButton(
+                return const FilledButton(
                   onPressed: null,
                   child: LinearProgressIndicator(),
                 );
